@@ -4,6 +4,6 @@ export class Note {
   complete: boolean = false;
 
   constructor(values: Object = {}) {
-    Object.assign(this, values);
+    (<any>Object).assign(this, values);
   }
 }

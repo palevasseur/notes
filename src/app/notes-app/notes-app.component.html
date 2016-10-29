@@ -1,0 +1,20 @@
+<section class="notesapp">
+  <header class="header">
+    <h1>Notes</h1>
+    <input class="new-note" placeholder="What needs to be done?" autofocus="" [(ngModel)]="newNote.title" (keyup.enter)="addNote()">
+  </header>
+  <section class="main" *ngIf="notes.length > 0">
+    <ul class="note-list">
+      <li *ngFor="let note of notes" [class.completed]="note.complete">
+        <div class="view">
+          <input class="toggle" type="checkbox" (click)="toggleNoteComplete(note)" [checked]="note.complete">
+          <label>{{note.title}}</label>
+          <button class="destroy" (click)="removeNote(note)"></button>
+        </div>
+      </li>
+    </ul>
+  </section>
+  <footer class="footer" *ngIf="notes.length > 0">
+    <span class="note-count"><strong>{{notes.length}}</strong> {{notes.length == 1 ? 'item' : 'items'}} left</span>
+  </footer>
+</section>

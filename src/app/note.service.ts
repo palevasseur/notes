@@ -35,7 +35,7 @@ export class NoteService {
     if (!note) {
       return null;
     }
-    Object.assign(note, values);
+    (<any>Object).assign(note, values);
     return note;
   }
 
