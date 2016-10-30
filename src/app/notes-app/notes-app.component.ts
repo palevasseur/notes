@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { Note } from "../note";
+import { Note } from '../note';
 import { NoteService } from '../note.service';
 
 @Component({
-  selector: 'notes-app',
+  selector: 'app-notes-app',
   templateUrl: './notes-app.component.html',
   styleUrls: ['./notes-app.component.css'],
   providers: [NoteService]

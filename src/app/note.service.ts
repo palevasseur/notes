@@ -52,7 +52,7 @@ export class NoteService {
   }
 
   // Toggle note complete
-  toggleNoteComplete(note: Note){
+  toggleNoteComplete(note: Note) {
     let updatedNote = this.updateNoteById(note.id, {
       complete: !note.complete
     });

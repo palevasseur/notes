@@ -1,9 +1,10 @@
 /* tslint:disable:no-unused-variable */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { By } from '@angular/platform-browser';
+import {By, BrowserModule} from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 
 import { NotesAppComponent } from './notes-app.component';
+import {FormsModule} from "@angular/forms";
 
 describe('NotesAppComponent', () => {
   let component: NotesAppComponent;
@@ -11,6 +12,7 @@ describe('NotesAppComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      imports: [ BrowserModule, FormsModule ],
       declarations: [ NotesAppComponent ]
     })
     .compileComponents();
