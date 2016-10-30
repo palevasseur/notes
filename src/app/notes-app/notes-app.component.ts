@@ -23,10 +23,6 @@ export class NotesAppComponent implements OnInit {
     this.newNote = new Note();
   }
 
-  toggleNoteComplete(note) {
-    this.noteService.toggleNoteComplete(note);
-  }
-
   removeNote(note) {
     this.noteService.deleteNoteById(note.id);
   }

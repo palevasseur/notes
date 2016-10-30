@@ -1,7 +1,8 @@
 export class Note {
-  id: number;
+  id: string;
   title: string = '';
-  complete: boolean = false;
+  text: string = '';
+  keywords: string[];
 
   constructor(values: Object = {}) {
     (<any>Object).assign(this, values);

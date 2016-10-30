@@ -12,11 +12,13 @@ describe('Note', () => {
   it('should accept values in the constructor', () => {
     let note = new Note({
       title: 'hello',
-      complete: true
+      text: 'test',
+      keywords: ['k1', 'k2']
     });
 
     expect(note.title).toEqual('hello');
-    expect(note.complete).toEqual(true);
+    expect(note.text).toEqual('test');
+    expect(note.keywords).toEqual(['k1', 'k2']);
   });
 
 });

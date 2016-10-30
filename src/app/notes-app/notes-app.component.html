@@ -1,15 +1,24 @@
 <section>
   <header>
     <h1>Notes</h1>
-    <input placeholder="Add note" autofocus="" [(ngModel)]="newNote.title" (keyup.enter)="addNote()">
+    <input placeholder="Keywords (comma separator)">
+    <button  md-icon-button (click)="addNote(note)"><md-icon class="md-24">add</md-icon></button>
+    <!--input placeholder="Add note" autofocus="" [(ngModel)]="newNote.title" (keyup.enter)="addNote()"-->
   </header>
   <section *ngIf="notes.length > 0">
       <md-card *ngFor="let note of notes" [class.completed]="note.complete">
-        <div>
           <!--input class="toggle" type="checkbox" (click)="toggleNoteComplete(note)" [checked]="note.complete"-->
-          <label>{{note.title}}</label>
-          <button  md-icon-button (click)="removeNote(note)"><md-icon class="md-24">delete</md-icon></button>
-        </div>
+          <md-card-title>
+            <span>{{note.title}}</span>
+          </md-card-title>
+          <md-card-content>
+            {{note.text}}
+          </md-card-content>
+          <md-card-subtitle>
+            <span>keywords: {{note.keywords}}</span>
+            <span> / id: {{note.id}}</span>
+            <button  md-icon-button (click)="removeNote(note)"><md-icon class="md-24">delete</md-icon></button>
+          </md-card-subtitle>
       </md-card>
   </section>
   <footer *ngIf="notes.length > 0">
