@@ -1,9 +1,26 @@
 <section>
   <header>
-    <h1>Notes</h1>
-    <input placeholder="Keywords (comma separator)">
-    <button  md-icon-button (click)="addNote(note)"><md-icon class="md-24">add</md-icon></button>
-    <!--input placeholder="Add note" autofocus="" [(ngModel)]="newNote.title" (keyup.enter)="addNote()"-->
+    <md-toolbar>
+
+      <span style="width: 100%"><input style="width: 100%" placeholder="Keywords (space separator)" [(ngModel)]="keywords" (keyup.enter)="search()"></span>
+      <!--span><button md-icon-button (click)="search(keywords)"><md-icon class="md-24">search</md-icon></button></span-->
+      <!--span><md-button-toggle (click)="displayNewNote=!displayNewNote;"><md-icon class="md-24">add</md-icon></md-button-toggle></span-->
+      <span *ngIf="!displayNewNote"><button md-icon-button (click)="displayNewNote=true;"><md-icon class="md-24">add</md-icon></button></span>
+      <span *ngIf="displayNewNote"><button md-icon-button (click)="displayNewNote=false;"><md-icon class="md-24">remove</md-icon></button></span>
+
+    </md-toolbar>
+
+    <md-card *ngIf="displayNewNote">
+      <div>
+        <input style="width: 80%" placeholder="Title" [(ngModel)]="newNote.title">
+      </div>
+
+      <div>
+        <textarea style="width: 80%" rows="3" placeholder="Text" [(ngModel)]="newNote.text"></textarea>
+        <button md-icon-button (click)="addNote(note)"><md-icon class="md-24">add</md-icon></button>
+      </div>
+    </md-card>
+
   </header>
   <section *ngIf="notes.length > 0">
       <md-card *ngFor="let note of notes" [class.completed]="note.complete">
@@ -21,7 +38,7 @@
           </md-card-subtitle>
       </md-card>
   </section>
-  <footer *ngIf="notes.length > 0">
+  <!--footer *ngIf="notes.length > 0">
     <span><strong>{{notes.length}}</strong> {{notes.length == 1 ? 'item' : 'items'}} left</span>
-  </footer>
+  </footer-->
 </section>

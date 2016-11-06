@@ -23,7 +23,7 @@ export class NoteService {
     },
     {
       'id': '9a88c66f-5a7b-4152-baab-462033884542',
-      'keywords':['js','code', 'array'],
+      'keywords':['git'],
       'title':'push a new project to github',
       'text':'	create the myapp repo on github\n[git remote add origin https://github.com/palevasseur/myapp.git]\n[git push --set-upstream origin master]'
     }
@@ -62,6 +62,15 @@ export class NoteService {
   // Simulate GET /notes
   getAllNotes(): Note[] {
     return this.notes;
+  }
+
+  getNotes(keywords:string) : Note[] {
+    let firstKeyword = keywords.split(' ')[0]; // todo: only take the first, add multiple keywords
+    return this.notes.filter(note => {
+      return !note.keywords ? false : note.keywords.some(k => {
+        return (k === firstKeyword);
+      });
+    });
   }
 
   // Simulate GET /notes/:id
