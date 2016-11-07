@@ -2,6 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { Note } from '../note';
 import { NoteService } from '../note.service';
 
+/*
+ todo:
+  - manage firebase auth. : { "rules": { ".read": "auth != null", ".write": "auth != null" } }
+ */
+
 @Component({
   selector: 'app-notes-app',
   templateUrl: './notes-app.component.html',

@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { AngularFire, FirebaseListObservable } from 'angularfire2';
 import { Note } from './note';
 
 @Injectable()
@@ -30,15 +31,18 @@ export class NoteService {
 
   ];
 
-  constructor() {
+  items: FirebaseListObservable<any[]>;
+
+  constructor(fireBase: AngularFire) {
+    this.items = fireBase.database.list('/items');
   }
 
   // Simulate POST /notes
   addNote(note: Note): NoteService {
-    if (!note.id) {
-      note.id = this.generateUUID();
-    }
+    let ref = this.items.push(note);
+    note.id = ref.toString();
     this.notes.unshift(note);
+
     return this;
   }
 
@@ -78,20 +82,6 @@ export class NoteService {
     return this.notes
       .filter(note => note.id === id)
       .pop();
-  }
-
-  generateUUID() {
-    var d = new Date().getTime();
-    if (window.performance && typeof window.performance.now === "function") {
-      d += performance.now(); //use high-precision timer if available
-    }
-    var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-      var r = (d + Math.random() * 16) % 16 | 0;
-      d = Math.floor(d / 16);
-      return (c == 'x' ? r : (r & 0x3 | 0x8)).toString(16);
-    });
-
-    return uuid;
   }
 
 }
