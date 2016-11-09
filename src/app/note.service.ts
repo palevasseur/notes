@@ -10,7 +10,7 @@ export class NoteService {
   lastId: number = 0;
 
   notes: Note[] = [
-    {
+ /*   {
       'id': '91734fe9-ec5b-456a-a081-880e346b641b',
       'keywords':['js','code', 'object'],
       'title':'loop in json object',
@@ -28,29 +28,45 @@ export class NoteService {
       'title':'push a new project to github',
       'text':'	create the myapp repo on github\n[git remote add origin https://github.com/palevasseur/myapp.git]\n[git push --set-upstream origin master]'
     }
-
+*/
   ];
 
   items: FirebaseListObservable<any[]>;
 
   constructor(fireBase: AngularFire) {
     this.items = fireBase.database.list('/items');
+    this.updateDbgCache();
   }
 
-  // Simulate POST /notes
-  addNote(note: Note): NoteService {
-    let ref = this.items.push(note);
-    note.id = ref.toString();
-    this.notes.unshift(note);
+  // !!! tmp sync !!!
+  updateDbgCache() {
+    this.notes = [];
+    this.items.forEach(notes => {
+      notes.forEach(note => {
+          this.notes.push({
+            'id':note.$key,
+            'keywords':note.keywords,
+            'title':note.title,
+            'text':note.text
+          });
+      });
+    });
 
-    return this;
+    let removedDup = [];
+    this.notes.forEach(note => {
+      if (!removedDup.some(n => n.id == note.id)) {
+        removedDup.push(note);
+      }
+    });
+    this.notes = removedDup;
   }
 
-  // Simulate DELETE /notes/:id
-  deleteNoteById(id: string): NoteService {
-    this.notes = this.notes
-      .filter(note => note.id !== id);
-    return this;
+  addNote(note: Note) {
+    this.items.push(note);
+  }
+
+  deleteNoteById(id: string) {
+    this.items.remove(id);
   }
 
   // Simulate PUT /notes/:id
@@ -65,10 +81,13 @@ export class NoteService {
 
   // Simulate GET /notes
   getAllNotes(): Note[] {
+    this.updateDbgCache();
+    console.log("notes=",this.notes);
     return this.notes;
   }
 
   getNotes(keywords:string) : Note[] {
+    this.updateDbgCache();
     let firstKeyword = keywords.split(' ')[0]; // todo: only take the first, add multiple keywords
     return this.notes.filter(note => {
       return !note.keywords ? false : note.keywords.some(k => {
