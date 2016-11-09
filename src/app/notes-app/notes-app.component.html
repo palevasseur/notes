@@ -22,8 +22,8 @@
     </md-card>
 
   </header>
-  <section *ngIf="notes.length > 0">
-      <md-card *ngFor="let note of notes" [class.completed]="note.complete">
+  <section>
+      <md-card *ngFor="let note of notes | async | filterNotes:searchKeywords" [class.completed]="note.complete">
           <!--input class="toggle" type="checkbox" (click)="toggleNoteComplete(note)" [checked]="note.complete"-->
           <md-card-title>
             <span>{{note.title}}</span>
@@ -33,7 +33,7 @@
           </md-card-content>
           <md-card-subtitle>
             <span>keywords: {{note.keywords}}</span>
-            <span> / id: {{note.id}}</span>
+            <span> / id: {{note.$key}}</span>
             <button  md-icon-button (click)="removeNote(note)"><md-icon class="md-24">delete</md-icon></button>
           </md-card-subtitle>
       </md-card>

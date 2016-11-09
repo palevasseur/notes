@@ -7,6 +7,7 @@ import { AngularFireModule } from 'angularfire2';
 
 import { AppComponent } from './app.component';
 import { NotesAppComponent } from './notes-app/notes-app.component';
+import { FilterNotesPipe } from './notes-app/filter-notes.pipe'
 
 export const firebaseConfig = {
   apiKey: 'AIzaSyCnaOC0gmAab9iEGN9I1UyIR3G8zwCvkWk',
@@ -23,7 +24,7 @@ export const firebaseConfig = {
     MaterialModule.forRoot(),
     AngularFireModule.initializeApp(firebaseConfig)
   ],
-  declarations: [ AppComponent, NotesAppComponent ],
+  declarations: [ AppComponent, NotesAppComponent, FilterNotesPipe ],
   providers: [],
   bootstrap: [AppComponent]
 })

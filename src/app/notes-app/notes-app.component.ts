@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Note } from '../note';
 import { NoteService } from '../note.service';
+import { FirebaseListObservable } from 'angularfire2';
 
 /*
  todo:
@@ -16,7 +17,7 @@ import { NoteService } from '../note.service';
 export class NotesAppComponent implements OnInit {
 
   keywords: string = '';
-  searchResult: Note[] = [];
+  searchKeywords: string[] = [];
   displayNewNote: boolean = false;
   newNote: Note = new Note();
 
@@ -34,23 +35,18 @@ export class NotesAppComponent implements OnInit {
     this.noteService.addNote(this.newNote);
     this.newNote = new Note();
 
-    // update search list
-    this.search();
   }
 
   removeNote(note) {
-    this.noteService.deleteNoteById(note.id);
-
-    // update search list
-    this.search();
+    this.noteService.deleteNoteById(note.$key);
   }
 
   search() {
-    this.searchResult = this.keywords ? this.noteService.getNotes(this.keywords) : this.noteService.getAllNotes();
+    this.searchKeywords = this.keywords.split(' ');
   }
 
   get notes() {
-    return this.searchResult;
+    return this.noteService.getAllNotes();
   }
 
 }
