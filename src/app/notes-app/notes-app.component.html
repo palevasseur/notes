@@ -34,6 +34,7 @@
           <md-card-subtitle>
             <span>keywords: {{note.keywords}}</span>
             <span> / id: {{note.$key}}</span>
+            <span> / date: {{formatDate(note.date)}}</span>
             <button  md-icon-button (click)="removeNote(note)"><md-icon class="md-24">delete</md-icon></button>
           </md-card-subtitle>
       </md-card>

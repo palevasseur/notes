@@ -2,9 +2,9 @@
 
 import { TestBed, async } from '@angular/core/testing';
 import { AppComponent } from './app.component';
-import { NotesAppComponent } from "./notes-app/notes-app.component";
-import {FormsModule} from "@angular/forms";
-import {BrowserModule} from "@angular/platform-browser";
+import { NotesAppComponent } from './notes-app/notes-app.component';
+import {FormsModule} from '@angular/forms';
+import {BrowserModule} from '@angular/platform-browser';
 import { MaterialModule } from '@angular/material';
 
 describe('App: Notes', () => {

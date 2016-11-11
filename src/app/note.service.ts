@@ -16,7 +16,7 @@ export class NoteService {
   }
 
   deleteNoteById(id: string) {
-    if(id) {
+    if (id) {
       this.items.remove(id);
     }
   }

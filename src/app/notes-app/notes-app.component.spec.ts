@@ -5,7 +5,7 @@ import { DebugElement } from '@angular/core';
 import { MaterialModule } from '@angular/material';
 
 import { NotesAppComponent } from './notes-app.component';
-import {FormsModule} from "@angular/forms";
+import {FormsModule} from '@angular/forms';
 
 describe('NotesAppComponent', () => {
   let component: NotesAppComponent;
