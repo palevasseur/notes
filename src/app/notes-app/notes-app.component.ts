@@ -16,8 +16,8 @@ import { FirebaseListObservable } from 'angularfire2';
 })
 export class NotesAppComponent implements OnInit {
 
-  keywords: string = '';
-  searchKeywords: string[] = [];
+  keywordsInput: string = '';
+  searchKeywords: string[][] = []; // js, obj test => [['js'], ['obj', 'test']] => js OR (obj AND test)
   displayNewNote: boolean = false;
   newNote: Note = new Note();
 
@@ -28,8 +28,8 @@ export class NotesAppComponent implements OnInit {
   }
 
   addNote() {
-    if(this.keywords) {
-      this.newNote.keywords = this.keywords.split(' ');
+    if(this.keywordsInput) {
+      this.newNote.keywords = this.flatten(this.computeKeywords(this.keywordsInput));
     }
 
     this.noteService.addNote(this.newNote);
@@ -41,8 +41,21 @@ export class NotesAppComponent implements OnInit {
     this.noteService.deleteNoteById(note.$key);
   }
 
+  flatten(keywords: string[][]) : string[] {
+    return [].concat.apply([], keywords);
+  }
+
+  computeKeywords(keywordsInput: string) : string[][] {
+    let searchKeywords = [];
+    if(keywordsInput) {
+      keywordsInput.split(',').forEach(keywords => searchKeywords.push(keywords.split(' ').filter(kw => !!kw)));
+    }
+
+    return searchKeywords;
+  }
+
   search() {
-    this.searchKeywords = this.keywords.split(' ');
+    this.searchKeywords = this.computeKeywords(this.keywordsInput);
   }
 
   get notes() {

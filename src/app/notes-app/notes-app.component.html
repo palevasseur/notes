@@ -2,8 +2,8 @@
   <header>
     <md-toolbar>
 
-      <span style="width: 100%"><input style="width: 100%" placeholder="Keywords (space separator)" [(ngModel)]="keywords" (keyup.enter)="search()"></span>
-      <!--span><button md-icon-button (click)="search(keywords)"><md-icon class="md-24">search</md-icon></button></span-->
+      <span style="width: 100%"><input style="width: 100%" placeholder="Keywords (space or comma separators)" [(ngModel)]="keywordsInput" (keyup.enter)="search()"></span>
+      <!--span><button md-icon-button (click)="search(keywordsInput)"><md-icon class="md-24">search</md-icon></button></span-->
       <!--span><md-button-toggle (click)="displayNewNote=!displayNewNote;"><md-icon class="md-24">add</md-icon></md-button-toggle></span-->
       <span *ngIf="!displayNewNote"><button md-icon-button (click)="displayNewNote=true;"><md-icon class="md-24">add</md-icon></button></span>
       <span *ngIf="displayNewNote"><button md-icon-button (click)="displayNewNote=false;"><md-icon class="md-24">remove</md-icon></button></span>

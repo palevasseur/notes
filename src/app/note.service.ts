@@ -36,11 +36,11 @@ export class NoteService {
     return note;
   }
 
-  getNotes(keywords:string) : Note[] {
+  getNotes(keywordsInput:string) : Note[] {
     this.updateDbgCache();
-    let firstKeyword = keywords.split(' ')[0]; // todo: only take the first, add multiple keywords
+    let firstKeyword = keywordsInput.split(' ')[0]; // todo: only take the first, add multiple keywordsInput
     return this.notes.filter(note => {
-      return !note.keywords ? false : note.keywords.some(k => {
+      return !note.keywordsInput ? false : note.keywordsInput.some(k => {
         return (k === firstKeyword);
       });
     });
