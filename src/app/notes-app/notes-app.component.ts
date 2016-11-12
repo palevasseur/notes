@@ -24,6 +24,7 @@ export class NotesAppComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.noteService.setDomain('items'); // change default => change also html <select> / selected
   }
 
   private static flatten(keywords: string[][]): string[] {
@@ -32,6 +33,10 @@ export class NotesAppComponent implements OnInit {
 
   formatDate(date: number) {
     return (new Date(date)).toString();
+  }
+
+  domainChanged(newVal) {
+    this.noteService.setDomain(newVal);
   }
 
   addNote() {

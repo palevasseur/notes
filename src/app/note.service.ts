@@ -7,16 +7,21 @@ export class NoteService {
 
   items: FirebaseListObservable<any[]>;
 
-  constructor(fireBase: AngularFire) {
-    this.items = fireBase.database.list('/items');
+  constructor(private fireBase: AngularFire) {
+  }
+
+  setDomain(notesDomain) {
+    this.items = this.fireBase.database.list('/'+notesDomain);
   }
 
   addNote(note: Note) {
-    this.items.push(note);
+    if(this.items) {
+      this.items.push(note);
+    }
   }
 
   deleteNoteById(id: string) {
-    if (id) {
+    if (this.items && id) {
       this.items.remove(id);
     }
   }

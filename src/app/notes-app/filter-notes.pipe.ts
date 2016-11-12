@@ -45,7 +45,7 @@ export class FilterNotesPipe implements PipeTransform {
         return 1;
       }
 
-      return a.date > b.date ? -1 : 1;
+      return a.date >= b.date ? -1 : 1;
     });
   }
 }

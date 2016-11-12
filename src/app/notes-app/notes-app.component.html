@@ -1,12 +1,18 @@
 <section>
   <header>
     <md-toolbar>
-
-      <span style="width: 100%"><input style="width: 100%" placeholder="Keywords (space or comma separators)" [(ngModel)]="keywordsInput" (keyup.enter)="search()"></span>
-      <!--span><button md-icon-button (click)="search(keywordsInput)"><md-icon class="md-24">search</md-icon></button></span-->
-      <!--span><md-button-toggle (click)="displayNewNote=!displayNewNote;"><md-icon class="md-24">add</md-icon></md-button-toggle></span-->
-      <span *ngIf="!displayNewNote"><button md-icon-button (click)="displayNewNote=true;"><md-icon class="md-24">add</md-icon></button></span>
-      <span *ngIf="displayNewNote"><button md-icon-button (click)="displayNewNote=false;"><md-icon class="md-24">remove</md-icon></button></span>
+      <span style="padding-right: 15px">
+        <select style="height: 26px;" #domain (change)="domainChanged(domain.value)">
+          <option value="items" selected>Items</option> <!-- selected => change also NotesAppComponent.ngOnInit() -->
+          <option value="code">Code</option>
+          <option value="photo">Photo</option>
+          <option value="cuisine">Cuisine</option>
+        </select>
+      </span>
+      <span style="width: 100%; padding-right: 15px"><input style="height: 20px; width: 100%" placeholder="Keywords (space or comma separators)" [(ngModel)]="keywordsInput" (keyup.enter)="search()"></span>
+      <span><button md-icon-button title="Search notes" (click)="search()"><md-icon>search</md-icon></button></span>
+      <span *ngIf="!displayNewNote"><button md-icon-button title="Show notes editor" (click)="displayNewNote=true;"><md-icon>add</md-icon></button></span>
+      <span *ngIf="displayNewNote"><button md-icon-button title="Hide notes editor" (click)="displayNewNote=false;"><md-icon>remove</md-icon></button></span>
 
     </md-toolbar>
 
@@ -17,7 +23,7 @@
 
       <div>
         <textarea style="width: 80%" rows="3" placeholder="Text" [(ngModel)]="newNote.text"></textarea>
-        <button md-icon-button (click)="addNote(note)"><md-icon class="md-24">add</md-icon></button>
+        <button md-icon-button (click)="addNote()"><md-icon class="md-24">add</md-icon></button>
       </div>
     </md-card>
 
