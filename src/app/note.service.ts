@@ -10,8 +10,8 @@ export class NoteService {
   constructor(private fireBase: AngularFire) {
   }
 
-  setDomain(notesDomain) {
-    this.items = this.fireBase.database.list('/'+notesDomain);
+  setCategory(notesCategory) {
+    this.items = this.fireBase.database.list('/'+notesCategory);
   }
 
   addNote(note: Note) {
@@ -30,32 +30,4 @@ export class NoteService {
     return this.items;
   }
 
-  /*
-  // Simulate PUT /notes/:id
-  updateNoteById(id: string, values: Object = {}): Note {
-    let note = this.getNoteById(id);
-    if (!note) {
-      return null;
-    }
-    (<any>Object).assign(note, values);
-    return note;
-  }
-
-  getNotes(keywordsInput:string) : Note[] {
-    this.updateDbgCache();
-    let firstKeyword = keywordsInput.split(' ')[0]; // todo: only take the first, add multiple keywordsInput
-    return this.notes.filter(note => {
-      return !note.keywordsInput ? false : note.keywordsInput.some(k => {
-        return (k === firstKeyword);
-      });
-    });
-  }
-
-  // Simulate GET /notes/:id
-  getNoteById(id: string): Note {
-    return this.notes
-      .filter(note => note.id === id)
-      .pop();
-  }
-*/
 }

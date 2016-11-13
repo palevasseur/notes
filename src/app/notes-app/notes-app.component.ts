@@ -16,7 +16,7 @@ import { NoteService } from '../note.service';
 export class NotesAppComponent implements OnInit {
 
   keywordsInput: string = ''; // ex: js, obj test
-  searchKeywords: string[][] = []; // ex: js, obj test => [['js'], ['obj', 'test']] => js OR (obj AND test)
+  keywordsFilter: string[][] = []; // ex: js, obj test => [['js'], ['obj', 'test']] => js OR (obj AND test)
   displayNewNote: boolean = false;
   newNote: Note = new Note();
 
@@ -24,7 +24,7 @@ export class NotesAppComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.noteService.setDomain('items'); // change default => change also html <select> / selected
+    this.noteService.setCategory('items'); // change default => change also html <select> / selected
   }
 
   private static flatten(keywords: string[][]): string[] {
@@ -35,8 +35,8 @@ export class NotesAppComponent implements OnInit {
     return (new Date(date)).toString();
   }
 
-  domainChanged(newVal) {
-    this.noteService.setDomain(newVal);
+  categoryChanged(newVal) {
+    this.noteService.setCategory(newVal);
   }
 
   addNote() {
@@ -54,7 +54,7 @@ export class NotesAppComponent implements OnInit {
   }
 
   search() {
-    this.searchKeywords = this.computeKeywords(this.keywordsInput);
+    this.keywordsFilter = this.computeKeywords(this.keywordsInput);
   }
 
   get notes() {
@@ -62,19 +62,19 @@ export class NotesAppComponent implements OnInit {
   }
 
   private computeKeywords(keywordsInput: string): string[][] {
-    let searchKeywords = [];
+    let keywordsFilter = [];
     if (keywordsInput) {
       keywordsInput
         .toLowerCase()
         .split(',')
         .forEach(
-          keywords => searchKeywords.push(
+          keywords => keywordsFilter.push(
             keywords.split(' ').filter(kw => !!kw)
           )
         );
     }
 
-    return searchKeywords;
+    return keywordsFilter;
   }
 
 }

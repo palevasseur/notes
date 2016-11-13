@@ -2,7 +2,7 @@
   <header>
     <md-toolbar>
       <span style="padding-right: 15px">
-        <select style="height: 26px;" #domain (change)="domainChanged(domain.value)">
+        <select style="height: 26px;" #category (change)="categoryChanged(category.value)">
           <option value="items" selected>Items</option> <!-- selected => change also NotesAppComponent.ngOnInit() -->
           <option value="code">Code</option>
           <option value="photo">Photo</option>
@@ -29,7 +29,7 @@
 
   </header>
   <section>
-      <md-card *ngFor="let note of notes | async | filterNotes:searchKeywords" [class.completed]="note.complete">
+      <md-card *ngFor="let note of notes | async | filterNotes:keywordsFilter" [class.completed]="note.complete">
           <!--input class="toggle" type="checkbox" (click)="toggleNoteComplete(note)" [checked]="note.complete"-->
           <md-card-title>
             <span>{{note.title}}</span>
