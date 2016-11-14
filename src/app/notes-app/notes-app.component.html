@@ -1,4 +1,4 @@
-<section>
+<section class="main-section">
   <header>
     <md-toolbar>
       <span style="padding-right: 15px">
@@ -31,21 +31,20 @@
   <section>
       <md-card *ngFor="let note of notes | async | filterNotes:keywordsFilter" [class.completed]="note.complete">
           <!--input class="toggle" type="checkbox" (click)="toggleNoteComplete(note)" [checked]="note.complete"-->
-          <md-card-title>
+          <md-card-title *ngIf="note.title">
             <span>{{note.title}}</span>
           </md-card-title>
           <md-card-content>
-            {{note.text}}
+            <div [innerHTML]="note.text | formatText"></div>
           </md-card-content>
           <md-card-subtitle>
             <span>keywords: {{note.keywords}}</span>
             <span> / id: {{note.$key}}</span>
             <span> / date: {{formatDate(note.date)}}</span>
-            <button  md-icon-button (click)="removeNote(note)"><md-icon class="md-24">delete</md-icon></button>
+            <button  md-icon-button (click)="removeNote(note)"><md-icon>delete</md-icon></button>
           </md-card-subtitle>
       </md-card>
   </section>
-  <!--footer *ngIf="notes.length > 0">
-    <span><strong>{{notes.length}}</strong> {{notes.length == 1 ? 'item' : 'items'}} left</span>
-  </footer-->
+  <footer>
+  </footer>
 </section>
