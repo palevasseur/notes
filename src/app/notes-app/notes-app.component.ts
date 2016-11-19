@@ -15,16 +15,22 @@ import { NoteService } from '../note.service';
 })
 export class NotesAppComponent implements OnInit {
 
+  category: string = 'items';
+
+  // keywords search
   keywordsInput: string = ''; // ex: js, obj test
   keywordsFilter: string[][] = []; // ex: js, obj test => [['js'], ['obj', 'test']] => js OR (obj AND test)
+
+  // new note
+  newNote: Note = null;
   displayNewNote: boolean = false;
-  newNote: Note = new Note();
+  keywordsNewNote: string = ''; // keywords list associated on note, ex; js, obj, test
 
   constructor(private noteService: NoteService) {
   }
 
   ngOnInit() {
-    this.noteService.setCategory('items'); // change default => change also html <select> / selected
+    this.noteService.setCategory(this.category);
   }
 
   private static flatten(keywords: string[][]): string[] {
@@ -35,18 +41,26 @@ export class NotesAppComponent implements OnInit {
     return (new Date(date)).toString();
   }
 
-  categoryChanged(newVal) {
-    this.noteService.setCategory(newVal);
+  categoryChanged() {
+    this.noteService.setCategory(this.category);
+  }
+
+  toggleNewNote() {
+    this.displayNewNote = !this.displayNewNote;
+    if(this.displayNewNote) {
+      this.newNote = new Note();
+      // init new note keywords with current keywords search
+      this.keywordsNewNote = NotesAppComponent.flatten(this.computeKeywords(this.keywordsInput)).join(',');
+    }
   }
 
   addNote() {
     if (this.keywordsInput) {
-      this.newNote.keywords = NotesAppComponent.flatten(this.computeKeywords(this.keywordsInput));
+      this.newNote.keywords = NotesAppComponent.flatten(this.computeKeywords(this.keywordsNewNote));
     }
 
     this.noteService.addNote(this.newNote);
-    this.newNote = new Note();
-
+    this.displayNewNote = false;
   }
 
   removeNote(note) {

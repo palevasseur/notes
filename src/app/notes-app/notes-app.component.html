@@ -1,30 +1,48 @@
 <section class="main-section">
   <header>
     <md-toolbar>
-      <span style="padding-right: 15px">
-        <select style="height: 26px;" #category (change)="categoryChanged(category.value)">
-          <option value="items" selected>Items</option> <!-- selected => change also NotesAppComponent.ngOnInit() -->
-          <option value="code">Code</option>
-          <option value="photo">Photo</option>
-          <option value="cuisine">Cuisine</option>
-        </select>
+      <md-button-toggle-group style="font-size: medium" [(ngModel)]="category" (change)="categoryChanged()">
+        <md-button-toggle value="items">Items</md-button-toggle>
+        <md-button-toggle value="code">Code</md-button-toggle>
+        <md-button-toggle value="photo">Photo</md-button-toggle>
+        <md-button-toggle value="cuisine">Cuisine</md-button-toggle>
+      </md-button-toggle-group>
+      <!--span><button md-icon-button title="Categories" (click)="displayCategories()"><md-icon>format_align_justify</md-icon></button></span-->
+      <span style="width: 100%; padding-right: 15px; padding-left: 15px">
+        <md-input style="width: 100%; font-size: medium" dividerColor="primary" floatingPlaceholder="false" placeholder="Keywords (space or comma separators)" [(ngModel)]="keywordsInput" (keyup.enter)="search()"></md-input>
       </span>
-      <span style="width: 100%; padding-right: 15px"><input style="height: 20px; width: 100%" placeholder="Keywords (space or comma separators)" [(ngModel)]="keywordsInput" (keyup.enter)="search()"></span>
       <span><button md-icon-button title="Search notes" (click)="search()"><md-icon>search</md-icon></button></span>
-      <span *ngIf="!displayNewNote"><button md-icon-button title="Show notes editor" (click)="displayNewNote=true;"><md-icon>add</md-icon></button></span>
-      <span *ngIf="displayNewNote"><button md-icon-button title="Hide notes editor" (click)="displayNewNote=false;"><md-icon>remove</md-icon></button></span>
+      <span *ngIf="!displayNewNote"><button md-icon-button title="Show notes editor" (click)="toggleNewNote()"><md-icon>add</md-icon></button></span>
+      <span *ngIf="displayNewNote"><button md-icon-button title="Hide notes editor" (click)="toggleNewNote()"><md-icon>remove</md-icon></button></span>
 
     </md-toolbar>
 
     <md-card *ngIf="displayNewNote">
-      <div>
-        <input style="width: 80%" placeholder="Title" [(ngModel)]="newNote.title">
+      <md-input style="width: 59%" placeholder="Title" [(ngModel)]="newNote.title"></md-input>
+      <md-input style="width: 39%" placeholder="Keywords" [(ngModel)]="keywordsNewNote"></md-input>
+      <textarea style="width: 98%; resize: vertical" rows="3" [(ngModel)]="newNote.text"></textarea>
+      <div style="width: 98%; text-align:right">
+        <button md-button (click)="addNote()">Create</button>
+        <button md-button (click)="toggleNewNote()">Cancel</button>
       </div>
 
-      <div>
-        <textarea style="width: 80%" rows="3" placeholder="Text" [(ngModel)]="newNote.text"></textarea>
-        <button md-icon-button (click)="addNote()"><md-icon class="md-24">add</md-icon></button>
-      </div>
+      <!--br> flex - div
+      <div class="flex-container">
+        <div class="flex-item">1</div>
+        <div class="flex-item">2</div>
+        <div class="flex-item">3</div>
+        <div class="flex-item">4</div>
+      </div-->
+
+      <!--br> flex - ul - li
+      <ul class="flex-container">
+        <li class="flex-item">1</li>
+        <li class="flex-item">2</li>
+        <li class="flex-item">3</li>
+        <li class="flex-item">4</li>
+        <li class="flex-item">5</li>
+        <li class="flex-item">6</li>
+      </ul-->
     </md-card>
 
   </header>
