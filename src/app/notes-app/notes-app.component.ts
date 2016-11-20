@@ -15,7 +15,9 @@ import { NoteService } from '../note.service';
 })
 export class NotesAppComponent implements OnInit {
 
-  category: string = 'items';
+  categories: {name: string, value: string}[];
+  selectedCategory: string; // value of the category
+  displayCategories: boolean = true; // display categories true => init with the good category
 
   // keywords search
   keywordsInput: string = ''; // ex: js, obj test
@@ -30,7 +32,12 @@ export class NotesAppComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.noteService.setCategory(this.category);
+    this.categories = this.noteService.getCategories();
+    if(this.categories.length>0) {
+      this.selectedCategory = this.categories[0].value;
+    }
+
+    //this.noteService.setCategory(this.currentCategoryValue);
   }
 
   private static flatten(keywords: string[][]): string[] {
@@ -41,8 +48,20 @@ export class NotesAppComponent implements OnInit {
     return (new Date(date)).toString();
   }
 
+  get selectedCategoryName() {
+    let cat = this.categories.filter(cat => cat.value==this.selectedCategory);
+    return cat.length>0 ? cat[0].name : '';
+  }
+
+  static previousCategory = ''; // todo: remove this workaround
   categoryChanged() {
-    this.noteService.setCategory(this.category);
+    if(NotesAppComponent.previousCategory==this.selectedCategory) {
+      return;
+    }
+
+    this.displayCategories = false;
+    this.noteService.setCategory(this.selectedCategory);
+    NotesAppComponent.previousCategory = this.selectedCategory;
   }
 
   toggleNewNote() {

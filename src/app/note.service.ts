@@ -10,6 +10,15 @@ export class NoteService {
   constructor(private fireBase: AngularFire) {
   }
 
+  getCategories() {
+    return [
+      { name:'Items', value:'items'},
+      { name:'Code', value:'code'},
+      { name:'Photo', value:'photo'},
+      { name:'Cuisine', value:'cuisine'}
+    ];
+  }
+
   setCategory(notesCategory) {
     this.items = this.fireBase.database.list('/'+notesCategory);
   }

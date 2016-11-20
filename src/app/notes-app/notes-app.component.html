@@ -1,17 +1,17 @@
 <section class="main-section">
   <header>
     <md-toolbar>
-      <md-button-toggle-group style="font-size: medium" [(ngModel)]="category" (change)="categoryChanged()">
-        <md-button-toggle value="items">Items</md-button-toggle>
-        <md-button-toggle value="code">Code</md-button-toggle>
-        <md-button-toggle value="photo">Photo</md-button-toggle>
-        <md-button-toggle value="cuisine">Cuisine</md-button-toggle>
+      <md-button-toggle-group *ngIf="displayCategories" style="font-size: medium" [(ngModel)]="selectedCategory" (change)="categoryChanged()">
+        <md-button-toggle *ngFor="let cat of categories" [value]="cat.value">{{cat.name}}</md-button-toggle>
+      </md-button-toggle-group>
+      <md-button-toggle-group *ngIf="!displayCategories" style="font-size: medium">
+        <md-button-toggle checked="true" (click)="displayCategories = true">{{selectedCategoryName}}</md-button-toggle>
       </md-button-toggle-group>
       <!--span><button md-icon-button title="Categories" (click)="displayCategories()"><md-icon>format_align_justify</md-icon></button></span-->
       <span style="width: 100%; padding-right: 15px; padding-left: 15px">
-        <md-input style="width: 100%; font-size: medium" dividerColor="primary" floatingPlaceholder="false" placeholder="Keywords (space or comma separators)" [(ngModel)]="keywordsInput" (keyup.enter)="search()"></md-input>
+        <md-input style="width: 100%; font-size: medium" dividerColor="primary" floatingPlaceholder="false" placeholder="Keywords (space or comma separators)" [(ngModel)]="keywordsInput" (keyup)="search()"></md-input>
       </span>
-      <span><button md-icon-button title="Search notes" (click)="search()"><md-icon>search</md-icon></button></span>
+      <!--span><button md-icon-button title="Search notes" (click)="search()"><md-icon>search</md-icon></button></span-->
       <span *ngIf="!displayNewNote"><button md-icon-button title="Show notes editor" (click)="toggleNewNote()"><md-icon>add</md-icon></button></span>
       <span *ngIf="displayNewNote"><button md-icon-button title="Hide notes editor" (click)="toggleNewNote()"><md-icon>remove</md-icon></button></span>
 
