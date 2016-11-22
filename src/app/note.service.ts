@@ -15,7 +15,7 @@ export class NoteService {
       { name:'Items', value:'items'},
       { name:'Code', value:'code'},
       { name:'Photo', value:'photo'},
-      { name:'Cuisine', value:'cuisine'}
+      { name:'Perso', value:'perso'}
     ];
   }
 

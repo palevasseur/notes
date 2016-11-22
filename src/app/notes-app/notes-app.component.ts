@@ -27,6 +27,7 @@ export class NotesAppComponent implements OnInit {
   newNote: Note = null;
   displayNewNote: boolean = false;
   keywordsNewNote: string = ''; // keywords list associated on note, ex; js, obj, test
+  editingNote: Note = null;
 
   constructor(private noteService: NoteService) {
   }
@@ -67,6 +68,7 @@ export class NotesAppComponent implements OnInit {
   toggleNewNote() {
     this.displayNewNote = !this.displayNewNote;
     if(this.displayNewNote) {
+      this.editingNote = null;
       this.newNote = new Note();
       // init new note keywords with current keywords search
       this.keywordsNewNote = NotesAppComponent.flatten(this.computeKeywords(this.keywordsInput)).join(',');
@@ -74,12 +76,26 @@ export class NotesAppComponent implements OnInit {
   }
 
   addNote() {
-    if (this.keywordsInput) {
+    if (this.keywordsNewNote) {
       this.newNote.keywords = NotesAppComponent.flatten(this.computeKeywords(this.keywordsNewNote));
     }
 
     this.noteService.addNote(this.newNote);
     this.displayNewNote = false;
+
+    if(this.editingNote) {
+      this.removeNote(this.editingNote);
+      this.editingNote = null;
+    }
+  }
+
+  editNote(note) {
+    this.editingNote = note;
+    this.newNote = new Note();
+    this.newNote.title = note.title;
+    this.newNote.text = note.text;
+    this.keywordsNewNote = note.keywords ? note.keywords.join(',') : '';
+    this.displayNewNote = true;
   }
 
   removeNote(note) {
