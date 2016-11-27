@@ -11,20 +11,20 @@
       <span style="width: 100%; padding-right: 15px; padding-left: 15px">
         <md-input style="width: 100%; font-size: medium" dividerColor="primary" floatingPlaceholder="false" placeholder="Keywords (space or comma separators)" [(ngModel)]="keywordsInput" (keyup)="search()"></md-input>
       </span>
-      <!--span><button md-icon-button title="Search notes" (click)="search()"><md-icon>search</md-icon></button></span-->
-      <span *ngIf="!displayNewNote"><button md-icon-button title="Show notes editor" (click)="toggleNewNote()"><md-icon>add</md-icon></button></span>
-      <span *ngIf="displayNewNote"><button md-icon-button title="Hide notes editor" (click)="toggleNewNote()"><md-icon>remove</md-icon></button></span>
+      <span><button md-icon-button title="New note" (click)="showNewNote()"><md-icon>add</md-icon></button></span>
+      <span *ngIf="!showNoteInfo"><button md-icon-button title="Show notes info" (click)="showNoteInfo=true;"><md-icon>short_text</md-icon></button></span>
+      <span *ngIf="showNoteInfo"><button md-icon-button title="Hide notes info" (click)="showNoteInfo=false;"><md-icon>drag_handle</md-icon></button></span>
 
     </md-toolbar>
 
-    <md-card *ngIf="displayNewNote">
+    <!--md-card *ngIf="displayNewNote">
       <md-input style="width: 59%" placeholder="Title" [(ngModel)]="newNote.title"></md-input>
       <md-input style="width: 39%" placeholder="Keywords" [(ngModel)]="keywordsNewNote"></md-input>
       <textarea style="width: 98%; resize: vertical" rows="3" [(ngModel)]="newNote.text"></textarea>
       <div style="width: 98%; text-align:right">
         <button md-button (click)="addNote()">Create</button>
         <button md-button (click)="toggleNewNote()">Cancel</button>
-      </div>
+      </div-->
 
       <!--br> flex - div
       <div class="flex-container">
@@ -43,26 +43,12 @@
         <li class="flex-item">5</li>
         <li class="flex-item">6</li>
       </ul-->
-    </md-card>
+    <!--/md-card-->
 
   </header>
   <section>
-      <md-card *ngFor="let note of notes | async | filterNotes:keywordsFilter" [class.completed]="note.complete">
-          <!--input class="toggle" type="checkbox" (click)="toggleNoteComplete(note)" [checked]="note.complete"-->
-          <md-card-title *ngIf="note.title">
-            <span>{{note.title}}</span>
-          </md-card-title>
-          <md-card-content>
-            <div [innerHTML]="note.text | formatText"></div>
-          </md-card-content>
-          <md-card-subtitle *ngIf="displayNewNote">
-            <span>keywords: {{note.keywords}}</span>
-            <span> / id: {{note.$key}}</span>
-            <span> / date: {{formatDate(note.date)}}</span>
-            <button md-icon-button (click)="editNote(note)"><md-icon>edit</md-icon></button>
-            <button md-icon-button (click)="removeNote(note)"><md-icon>delete</md-icon></button>
-          </md-card-subtitle>
-      </md-card>
+    <app-note #idCreateNote [mode]="'create'" [display]="false"></app-note>
+    <app-note *ngFor="let note of notes | async | filterNotes:keywordsFilter" [note]="note" [showExtra]="showNoteInfo"></app-note>
   </section>
   <footer>
   </footer>

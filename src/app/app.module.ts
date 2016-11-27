@@ -9,6 +9,8 @@ import { AppComponent } from './app.component';
 import { NotesAppComponent } from './notes-app/notes-app.component';
 import { FilterNotesPipe } from './notes-app/filter-notes.pipe';
 import { FormatTextPipe } from './notes-app/format-text.pipe';
+import { NoteComponent } from './note/note.component';
+import {NoteService} from "./note.service";
 
 export const firebaseConfig = {
   apiKey: 'AIzaSyCnaOC0gmAab9iEGN9I1UyIR3G8zwCvkWk',
@@ -25,8 +27,8 @@ export const firebaseConfig = {
     MaterialModule.forRoot(),
     AngularFireModule.initializeApp(firebaseConfig)
   ],
-  declarations: [ AppComponent, NotesAppComponent, FilterNotesPipe, FormatTextPipe ],
-  providers: [],
+  declarations: [ AppComponent, NotesAppComponent, FilterNotesPipe, FormatTextPipe, NoteComponent ],
+  providers: [NoteService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

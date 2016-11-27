@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import { Note } from '../note';
 import { NoteService } from '../note.service';
 
@@ -10,25 +10,27 @@ import { NoteService } from '../note.service';
 @Component({
   selector: 'app-notes-app',
   templateUrl: './notes-app.component.html',
-  styleUrls: ['./notes-app.component.css'],
-  providers: [NoteService]
+  styleUrls: ['./notes-app.component.css']
 })
 export class NotesAppComponent implements OnInit {
+
+  @ViewChild('idCreateNote') createNote;
 
   categories: {name: string, value: string}[];
   selectedCategory: string; // value of the category
   displayCategories: boolean = true; // display categories true => init with the good category
+  showNoteInfo: boolean = false;
 
   // keywords search
   keywordsInput: string = ''; // ex: js, obj test
   keywordsFilter: string[][] = []; // ex: js, obj test => [['js'], ['obj', 'test']] => js OR (obj AND test)
 
   // new note
-  newNote: Note = null;
+/*  newNote: Note = null;
   displayNewNote: boolean = false;
   keywordsNewNote: string = ''; // keywords list associated on note, ex; js, obj, test
   editingNote: Note = null;
-
+*/
   constructor(private noteService: NoteService) {
   }
 
@@ -65,16 +67,10 @@ export class NotesAppComponent implements OnInit {
     NotesAppComponent.previousCategory = this.selectedCategory;
   }
 
-  toggleNewNote() {
-    this.displayNewNote = !this.displayNewNote;
-    if(this.displayNewNote) {
-      this.editingNote = null;
-      this.newNote = new Note();
-      // init new note keywords with current keywords search
-      this.keywordsNewNote = NotesAppComponent.flatten(this.computeKeywords(this.keywordsInput)).join(',');
-    }
+  showNewNote() {
+    this.createNote.display = true;
   }
-
+/*
   addNote() {
     if (this.keywordsNewNote) {
       this.newNote.keywords = NotesAppComponent.flatten(this.computeKeywords(this.keywordsNewNote));
@@ -101,7 +97,7 @@ export class NotesAppComponent implements OnInit {
   removeNote(note) {
     this.noteService.deleteNoteById(note.$key);
   }
-
+*/
   search() {
     this.keywordsFilter = this.computeKeywords(this.keywordsInput);
   }
