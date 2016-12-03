@@ -1,4 +1,4 @@
-<md-card *ngIf="display && mode=='display'">
+<md-card *ngIf="display && mode=='display'" (dblclick)="editNote()">
   <md-card-title *ngIf="note.title">
     <span>{{note.title}}</span>
   </md-card-title>

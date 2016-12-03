@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { MaterialModule } from '@angular/material';
-import { AngularFireModule } from 'angularfire2';
+import {AngularFireModule, AuthProviders, AuthMethods} from 'angularfire2';
 
 import { AppComponent } from './app.component';
 import { NotesAppComponent } from './notes-app/notes-app.component';
@@ -20,12 +20,17 @@ export const firebaseConfig = {
   messagingSenderId: '294714633105'
 };
 
+const firebaseAuthConfig = {
+  provider: AuthProviders.Google,
+  method: AuthMethods.Redirect
+};
+
 @NgModule({
   imports: [ BrowserModule,
     FormsModule,
     HttpModule,
     MaterialModule.forRoot(),
-    AngularFireModule.initializeApp(firebaseConfig)
+    AngularFireModule.initializeApp(firebaseConfig, firebaseAuthConfig)
   ],
   declarations: [ AppComponent, NotesAppComponent, FilterNotesPipe, FormatTextPipe, NoteComponent ],
   providers: [NoteService],

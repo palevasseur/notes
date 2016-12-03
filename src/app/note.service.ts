@@ -8,6 +8,16 @@ export class NoteService {
   private items: FirebaseListObservable<any[]>;
 
   constructor(private fireBase: AngularFire) {
+    this.fireBase.auth.subscribe(auth => {
+      if(!auth) {
+        console.log('User logging...');
+        this.fireBase.auth.login();
+      }
+      else {
+        console.log('User ' + auth.uid+ ' logged');
+      }
+    });
+
   }
 
   getCategories() {

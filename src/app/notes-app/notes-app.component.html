@@ -1,6 +1,7 @@
 <section class="main-section">
   <header>
     <md-toolbar>
+
       <md-button-toggle-group *ngIf="displayCategories" style="font-size: medium" [(ngModel)]="selectedCategory" (change)="categoryChanged()">
         <md-button-toggle *ngFor="let cat of categories" [value]="cat.value">{{cat.name}}</md-button-toggle>
       </md-button-toggle-group>
@@ -8,9 +9,11 @@
         <md-button-toggle checked="true" (click)="displayCategories = true">{{selectedCategoryName}}</md-button-toggle>
       </md-button-toggle-group>
       <!--span><button md-icon-button title="Categories" (click)="displayCategories()"><md-icon>format_align_justify</md-icon></button></span-->
+
       <span style="width: 100%; padding-right: 15px; padding-left: 15px">
         <md-input style="width: 100%; font-size: medium" dividerColor="primary" floatingPlaceholder="false" placeholder="Keywords (space or comma separators)" [(ngModel)]="keywordsInput" (keyup)="search()"></md-input>
       </span>
+
       <span><button md-icon-button title="New note" (click)="showNewNote()"><md-icon>add</md-icon></button></span>
       <span *ngIf="!showNoteInfo"><button md-icon-button title="Show notes info" (click)="showNoteInfo=true;"><md-icon>short_text</md-icon></button></span>
       <span *ngIf="showNoteInfo"><button md-icon-button title="Hide notes info" (click)="showNoteInfo=false;"><md-icon>drag_handle</md-icon></button></span>
