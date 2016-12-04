@@ -56,7 +56,7 @@ export class NoteComponent implements OnInit {
     this.noteService.updateNote(this.note.$key, {
         title: this.note.title,
         text: this.note.text,
-        keywords: this.keywordsInput.split(','),
+        keywords: this.keywordsInput.toLowerCase().split(','),
         date: this.note.date
       }
     );
@@ -69,7 +69,7 @@ export class NoteComponent implements OnInit {
     this.noteService.addNote({
         title: this.note.title,
         text: this.note.text,
-        keywords: this.keywordsInput.split(','),
+        keywords: this.keywordsInput.toLowerCase().split(','),
         date: (new Date()).getTime()
       }
     );
