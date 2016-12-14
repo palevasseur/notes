@@ -6,6 +6,7 @@ import {Note} from './note';
 export class NoteService {
 
   private items: FirebaseListObservable<any[]>;
+  private keywordsList: string[] = [];
 
   constructor(private fireBase: AngularFire) {
     this.fireBase.auth.subscribe(auth => {
@@ -17,7 +18,6 @@ export class NoteService {
         console.log('User ' + auth.uid+ ' logged');
       }
     });
-
   }
 
   getCategories() {
@@ -29,19 +29,41 @@ export class NoteService {
     ];
   }
 
+  getKeywordsList() {
+    return this.keywordsList;
+  }
+
+  updateKeywordsList(newKeys: string[]) {
+    if(newKeys) {
+      newKeys.forEach(key => {
+        if(this.keywordsList.indexOf(key) == -1) {
+          this.keywordsList.push(key);
+        }
+      });
+    }
+  }
+
   setCategory(notesCategory) {
     this.items = this.fireBase.database.list('/' + notesCategory);
+
+    this.items.subscribe(snapshots => {
+      snapshots.forEach(snapshot => {
+        this.updateKeywordsList(snapshot.keywords);
+      });
+    });
   }
 
   addNote(note: Note) {
     if (this.items) {
       this.items.push(note);
+      this.updateKeywordsList(note.keywords);
     }
   }
 
   updateNote(key: string, note: Note) {
     if (this.items) {
       this.items.update(key, note);
+      this.updateKeywordsList(note.keywords);
     }
   }
 

@@ -101,6 +101,10 @@ export class NotesAppComponent implements OnInit {
     return this.noteService.getAllNotes();
   }
 
+  get suggestions() {
+    return this.noteService.getKeywordsList();
+  }
+
   private computeKeywords(keywordsInput: string): string[][] {
     let keywordsFilter = [];
     if (keywordsInput) {
