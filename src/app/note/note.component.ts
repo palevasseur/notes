@@ -56,8 +56,9 @@ export class NoteComponent implements OnInit {
     this.noteService.updateNote(this.note.$key, {
         title: this.note.title,
         text: this.note.text,
-        keywords: this.keywordsInput.toLowerCase().split(','),
-        date: this.note.date
+        keywords: this.mode == 'edit' ? this.keywordsInput.toLowerCase().split(',') : this.note.keywords,
+        date: this.note.date,
+        sortId: this.note.sortId || this.note.date // to migrate, use date if no sortId
       }
     );
 
@@ -70,7 +71,8 @@ export class NoteComponent implements OnInit {
         title: this.note.title,
         text: this.note.text,
         keywords: this.keywordsInput.toLowerCase().split(','),
-        date: (new Date()).getTime()
+        date: (new Date()).getTime(),
+        sortId: (new Date()).getTime()
       }
     );
 
@@ -91,5 +93,30 @@ export class NoteComponent implements OnInit {
 
   removeNote() {
     this.noteService.deleteNoteById(this.note.$key);
+  }
+
+  nbrLinesToEdit() {
+    let nbrLines = this.note.text.split('\n').length;
+
+    if(nbrLines >= 20) {
+      return 20;
+    }
+
+    if(nbrLines <= 3) {
+      return 3;
+    }
+
+    return nbrLines
+  }
+
+  moveTop() {
+    this.note.sortId = (new Date()).getTime();
+    this.updateNote();
+  }
+
+  moveUp() {
+  }
+
+  moveDown() {
   }
 }

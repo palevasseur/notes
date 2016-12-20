@@ -33,19 +33,22 @@ export class FilterNotesPipe implements PipeTransform {
 
   private static sortNotes(notes: any[]) : any[] {
     return notes.sort((a, b) => {
-      if(!a.date && !b.date) {
+      let sortIdA = a.sortId || a.date; // to migrate, use date if no sortId
+      let sortIdB = b.sortId || b.date;
+
+      if(!sortIdA && !sortIdB) {
         return 0;
       }
 
-      if(a.date && !b.date) {
+      if(sortIdA && !sortIdB) {
         return -1;
       }
 
-      if(!a.date && b.date) {
+      if(!sortIdA && sortIdB) {
         return 1;
       }
 
-      return a.date >= b.date ? -1 : 1;
+      return sortIdA >= sortIdB ? -1 : 1;
     });
   }
 }

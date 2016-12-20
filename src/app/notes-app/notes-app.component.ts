@@ -1,6 +1,8 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit, ViewChild, Inject, ElementRef} from '@angular/core';
 import { Note } from '../note';
 import { NoteService } from '../note.service';
+
+declare var jQuery:any;
 
 @Component({
   selector: 'app-notes-app',
@@ -10,6 +12,7 @@ import { NoteService } from '../note.service';
 export class NotesAppComponent implements OnInit {
 
   @ViewChild('idCreateNote') createNote;
+  @ViewChild('idKeywordsSearch') keywordsSearch;
 
   categories: {name: string, value: string}[];
   selectedCategory: string; // value of the category
@@ -20,14 +23,16 @@ export class NotesAppComponent implements OnInit {
   keywordsInput: string = ''; // ex: js, obj test
   keywordsFilter: string[][] = []; // ex: js, obj test => [['js'], ['obj', 'test']] => js OR (obj AND test)
 
-  // new note
-/*  newNote: Note = null;
-  displayNewNote: boolean = false;
-  keywordsNewNote: string = ''; // keywords list associated on note, ex; js, obj, test
-  editingNote: Note = null;
-*/
   constructor(private noteService: NoteService) {
   }
+
+  /*
+   elementRef: ElementRef;
+
+   constructor(@Inject(ElementRef) elementRef: ElementRef, private noteService: NoteService) {
+   this.elementRef = elementRef;
+   }
+   */
 
   ngOnInit() {
     this.categories = this.noteService.getCategories();
@@ -36,6 +41,27 @@ export class NotesAppComponent implements OnInit {
     }
 
     //this.noteService.setCategory(this.currentCategoryValue);
+  }
+
+  ngAfterViewInit() {
+    var _this = this;
+    //jQuery(this.elementRef.nativeElement)
+    //  .find('#idKeywordsSearch')
+    jQuery(this.keywordsSearch.nativeElement).autocomplete({
+        source:function( request, response ) {
+          // suggest against the last term of input
+          response( jQuery.ui.autocomplete.filter(
+            _this.suggestions, request.term.split(/[ ,]/).pop() ) );
+        },
+        focus: function() {
+          return false; // prevent value inserted on focus
+        },
+        select: (e, args) => {
+          let previousEntry = _this.keywordsInput.replace(/(.*[, ]).*|.*/, '$1');
+          _this.keywordsInput = previousEntry + args.item.value; // https://regex101.com/r/YSDuUD/1
+          return false; // prevent value set on exact match
+        }
+      });
   }
 
   private static flatten(keywords: string[][]): string[] {
@@ -58,6 +84,7 @@ export class NotesAppComponent implements OnInit {
     }
 
     this.displayCategories = false;
+    this.noteService.resetKeywordsList();
     this.noteService.setCategory(this.selectedCategory);
     NotesAppComponent.previousCategory = this.selectedCategory;
   }

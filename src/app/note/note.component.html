@@ -11,6 +11,9 @@
     <span> / date: {{formatDate(note.date)}}</span>
     <button md-icon-button (click)="editNote()"><md-icon>edit</md-icon></button>
     <button md-icon-button (click)="removeNote()"><md-icon>delete</md-icon></button>
+    <!--button md-icon-button (click)="moveUp()"><md-icon>keyboard_arrow_up</md-icon></button>
+    <button md-icon-button (click)="moveDown()"><md-icon>keyboard_arrow_down</md-icon></button-->
+    <button md-icon-button (click)="moveTop()"><md-icon>looks</md-icon></button>
   </md-card-subtitle>
 </md-card>
 
@@ -19,7 +22,7 @@
     <md-input style="width: 98%" placeholder="Title" [(ngModel)]="note.title"></md-input>
   </md-card-title>
   <md-card-content>
-    <textarea style="width: 98%; resize: vertical" rows="3" [(ngModel)]="note.text"></textarea>
+    <textarea style="width: 98%; resize: vertical" rows="{{nbrLinesToEdit()}}" [(ngModel)]="note.text"></textarea>
   </md-card-content>
   <md-card-subtitle>
     <md-input placeholder="Keywords" [(ngModel)]="keywordsInput"></md-input>

@@ -33,6 +33,10 @@ export class NoteService {
     return this.keywordsList;
   }
 
+  resetKeywordsList() {
+    this.keywordsList = [];
+  }
+
   updateKeywordsList(newKeys: string[]) {
     if(newKeys) {
       newKeys.forEach(key => {

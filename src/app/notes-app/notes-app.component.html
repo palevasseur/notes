@@ -11,7 +11,8 @@
       <!--span><button md-icon-button title="Categories" (click)="displayCategories()"><md-icon>format_align_justify</md-icon></button></span-->
 
       <span style="width: 100%; padding-right: 15px; padding-left: 15px">
-        <md-input style="width: 100%; font-size: medium" dividerColor="primary" floatingPlaceholder="false" placeholder="Keywords (space or comma separators)" [(ngModel)]="keywordsInput" (keyup)="search()"></md-input>
+        <!--md-input-- style="width: 100%; font-size: medium" dividerColor="primary" floatingPlaceholder="false" placeholder="Keywords (space or comma separators)" [(ngModel)]="keywordsInput" (keyup)="search()"></md-input-->
+        <input #idKeywordsSearch style="width: 100%; font-size: medium" dividerColor="primary" placeholder="Keywords (space or comma separators)" [(ngModel)]="keywordsInput" (keyup)="search()">
       </span>
 
       <span><button md-icon-button title="New note" (click)="showNewNote()"><md-icon>add</md-icon></button></span>
