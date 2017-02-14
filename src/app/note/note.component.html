@@ -3,7 +3,7 @@
     <span>{{note.title}}</span>
   </md-card-title>
   <md-card-content>
-    <div [innerHTML]="note.text | formatText"></div>
+    <div style="white-space: pre-wrap;" [innerHTML]="note.text | formatText"></div>
   </md-card-content>
   <md-card-subtitle *ngIf="showExtra">
     <span>keywords: {{note.keywords}}</span>
