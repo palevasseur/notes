@@ -129,12 +129,12 @@ hide footbox
     code.split('\n').forEach((curLine) => {
 
       // compute function
-      let [,$tabs='', $class='', $fct='', $param=''] = curLine.match(/^( *)([a-zA-Z]+)\.([a-zA-Z]+)\(([^)]*)\)/) || [];
+      let [,$tabs='', $class='', $fct='', $param=''] = curLine.match(/^( *)([a-zA-Z.]+)\.([a-zA-Z]+)\(([^)]*)\)/) || [];
       if($class && $fct)
       {
         // pop until same tabs level
         let lastPreTabs = lastElem(acc.preTabs, '');
-        while(lastPreTabs.length > $tabs.length && lastPreTabs.length != 0) {
+        while(lastPreTabs.length >= $tabs.length && acc.preTabs.length != 0) {
           let preClass = acc.preClass.pop();
           acc.preTabs.pop();
           let deactivate = acc.preGroup.pop();
@@ -147,7 +147,7 @@ hide footbox
 
         // get last class and push new line
         let lastPreClass = lastElem(acc.preClass, '[');
-        let plantLine = lastPreClass + '->' + $class + ':' + $fct + '()';
+        let plantLine = lastPreClass + '->' + $class + ':' + $fct + '(' + $param + ')';
         acc.lines.push(plantLine);
 
         // manage group
@@ -170,6 +170,11 @@ hide footbox
         let lastPreClass = lastElem(acc.preClass, '');
         if($note && lastPreClass) {
           acc.lines.push('note right of ' + lastPreClass + ' : ' + $note);
+        }
+        else {
+          if(/\.\.\./.test(curLine)) {
+            acc.lines.push(curLine);
+          }
         }
       }
 
