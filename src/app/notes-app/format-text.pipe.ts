@@ -145,6 +145,11 @@ hide footbox
           lastPreTabs = lastElem(acc.preTabs, '');
         }
 
+        // create new
+        if($fct=='new') {
+          acc.lines.push('create ' + $class);
+        }
+
         // get last class and push new line
         let lastPreClass = lastElem(acc.preClass, '[');
         let plantLine = lastPreClass + '->' + $class + ':' + $fct + '(' + $param + ')';
@@ -166,10 +171,19 @@ hide footbox
       else {
         // compute note
         let [,$tabs='', $note=''] = curLine.match(/^( *)'([^']*)'/) || [];
-        // todo: get class name from same tabs level
-        let lastPreClass = lastElem(acc.preClass, '');
-        if($note && lastPreClass) {
-          acc.lines.push('note right of ' + lastPreClass + ' : ' + $note);
+        if($note) {
+          // get class name from same tabs level
+          let tabPos = acc.preTabs.length;
+          while(tabPos > 0 && acc.preTabs[tabPos-1].length >= $tabs.length) {
+            tabPos--;
+          }
+
+          if(tabPos > 0) {
+            acc.lines.push('note right of ' + acc.preClass[tabPos-1] + ' : ' + $note);
+          }
+          else if (acc.preClass.length>0) {
+            acc.lines.push('note left of ' + acc.preClass[tabPos] + ' : ' + $note);
+          }
         }
         else {
           if(/\.\.\./.test(curLine)) {
