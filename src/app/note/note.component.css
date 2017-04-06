@@ -15,3 +15,21 @@ md-card-content {
 
 md-card-subtitle {
 }
+
+.moreContent {
+  text-align: center;
+  cursor: pointer;
+}
+
+.moreContent:hover {
+  background-color: #fbfbfb;
+}
+
+.lessContent {
+  text-align: center;
+  cursor: pointer;
+}
+
+.lessContent:hover {
+  background-color: #fbfbfb;
+}
