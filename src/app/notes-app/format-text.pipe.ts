@@ -4,10 +4,14 @@ import {plantUrl} from "../utils/plantuml";
 @Pipe({name: 'formatText'})
 export class FormatTextPipe implements PipeTransform {
   // note: to manage space, tab and \n <note> component use "white-space: pre-wrap;" for <md-card-content>
+  private static noteId = 1;
+
   transform(text: string) {
-    // html link
-    text = text.replace(/(https?:\/\/[^ \n\r()]+)/gi, (match, $1) => {
-      return '<a href="' + $1 + '" >' + $1 + '</a>';
+    // html link (https://regex101.com/r/vYEDZz/2)
+    text = text.replace(/(?:\[(.*?)\])?\(?(https?:\/\/[^ \n\r()]+)\)?/gi, (match, $1, $2) => {
+      return $1
+        ? '<a href="' + $2 + '" title="' + $2 + '" >' + $1 + '</a>'
+        : '<a href="' + $2 + '">' + $2 + '</a>';
     });
 
     // plantuml tag => uml diagram
@@ -58,7 +62,7 @@ hide empty methods
       // class name => plantuml not need it
       // class with abstract prop => plantuml need to define
       [
-        { regex: /^([a-zA-Z]+) *(<<abstract>>)/,
+        { regex: /^([a-zA-Z]+) *(<<\w+>>)/,
           compute: (line, className) => (line)
         },
         { regex: /^ +(\w+)/,
@@ -66,6 +70,21 @@ hide empty methods
         },
         { regex: /^ +(\.\.>) +/,
           compute: (line, className) => (className + line)
+        },
+        { regex: /^ +(-->) +/,
+          compute: (line, className) => (className + line)
+        },
+        { regex: /^'([^']*)'/,
+          compute: (line, className) => ('note "' + line.replace(/^'([^']*)'/, (_, $1) => $1) + '" as N' + FormatTextPipe.noteId++)
+        },
+        { regex: /^ +<?'([^']*)'/,
+          compute: (line, className) => ('note left of ' + className + ' #f2f2f2: ' + line.replace(/^ +<?'([^']*)'/, (_, $1) => $1))
+        },
+        { regex: /^ +>'([^']*)'/,
+          compute: (line, className) => ('note right of ' + className + ' #f2f2f2: ' + line.replace(/^ +>'([^']*)'/, (_, $1) => $1))
+        },
+        { regex: /^ +\^'([^']*)'/,
+          compute: (line, className) => ('note top of ' + className + ' #f2f2f2: ' + line.replace(/^ +\^'([^']*)'/, (_, $1) => $1))
         },
         { regex: /^ +(-->) +/,
           compute: (line, className) => (className + line)
@@ -128,6 +147,12 @@ hide footbox
 
     code.split('\n').forEach((curLine) => {
 
+      // check if condition [xxx] before function exist
+      let [,$condTabs='', $condDirection='', $condCondition='', $condFunction=''] = curLine.match(/^( *)([<>])?\[([^\]]*)\](.*)/) || [];
+      if($condCondition) {
+        // remove condition, will add it after computing function
+        curLine = $condTabs + $condFunction
+      }
       // compute function
       let [,$tabs='', $class='', $fct='', $param=''] = curLine.match(/^( *)([a-zA-Z.]+)\.([a-zA-Z]+)\(([^)]*)\)/) || [];
       if($class && $fct)
@@ -155,6 +180,12 @@ hide footbox
         let plantLine = lastPreClass + '->' + $class + ':' + $fct + '(' + $param + ')';
         acc.lines.push(plantLine);
 
+        if($condCondition) {
+          $condDirection == '>'
+            ? acc.lines.push('hnote right #fff0e6: ' + $condCondition)
+            : acc.lines.push('hnote left #fff0e6: ' + $condCondition);
+        }
+
         // manage group
         if(lastPreClass == $class) {
           acc.lines.push('activate ' + $class);
@@ -179,15 +210,23 @@ hide footbox
           }
 
           if(tabPos > 0) {
-            acc.lines.push('note right of ' + acc.preClass[tabPos-1] + ' : ' + $note);
+            acc.lines.push('rnote right of ' + acc.preClass[tabPos-1] + ' #f2f2f2: ' + $note);
           }
           else if (acc.preClass.length>0) {
-            acc.lines.push('note left of ' + acc.preClass[tabPos] + ' : ' + $note);
+            acc.lines.push('rnote left of ' + acc.preClass[tabPos] + ' #f2f2f2: ' + $note);
           }
         }
         else {
           if(/\.\.\./.test(curLine)) {
             acc.lines.push(curLine);
+          }
+          // group begin (https://regex101.com/r/WxcAhE/1)
+          else if (/^ *#+([^#\n\r]+)#*/.test(curLine)) {
+            acc.lines.push(curLine.replace(/^ *#+([^#\n\r]+)#*/, (_, $1) => ('group ' + $1)));
+          }
+          // group end
+          else if (/^ *#+$/.test(curLine)) {
+            acc.lines.push('end');
           }
         }
       }
